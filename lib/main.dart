@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return BlocProvider<BaseCubit>(
-      create: (context) => BaseCubit()..getNews(category: "sports")..changeTheme(),
+      create: (context) => BaseCubit()..getNews(category: "sports"),
       child: BlocConsumer<BaseCubit, BaseStates>(
         listener: (context, state) => {},
         builder: (context, state) =>
