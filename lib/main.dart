@@ -2,16 +2,19 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:news/shared/bloc_observer.dart';
+import 'package:news/shared/network/remote/dio.dart';
 
 import 'layout/homeNews.dart';
 
 void main() {
+  DioHelper().inti();
   Bloc.observer = MyBlocObserver();
 
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   // This widget is the root of your application.
@@ -20,6 +23,7 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          primarySwatch: Colors.cyan,
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.white,
           actionsIconTheme: IconThemeData(color: Colors.black),
@@ -37,7 +41,9 @@ class MyApp extends StatelessWidget {
 
           ),
         ),
-        home: Home());
+        home: Directionality(
+            textDirection: TextDirection.ltr,
+            child: Home()));
   }
 
 }

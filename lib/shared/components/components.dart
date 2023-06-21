@@ -56,78 +56,65 @@ Widget defaultFormField({
       validator: validator,
     );
 
-Widget defaultItemTasks({required Map map, required context}) {
-  var baseCubit = BaseCubit.getInstance(context);
+Widget defaultItemNews(
+    {required List<dynamic> articles}) {
+  return  ListView.separated(
+    physics: const BouncingScrollPhysics(),
+    itemBuilder: (BuildContext context, int index) {
+      Map<String, dynamic> article = articles[index];
 
-  return Dismissible(
-    key: Key("".toString()),
-    onDismissed: (direction) {
-    },
-    child: Padding(
+      return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 35.0,
-            child: Text(""),
+      child: Row(children: [
+        Container(
+          width: 120,
+          height: 120,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            image: DecorationImage(
+                image: NetworkImage("https://th.bing.com/th/id/OIP.p-aZsNRUiC7FilHb3hnEYgHaE8?pid=ImgDet&rs=1"),
+                fit: BoxFit.cover),
           ),
-          const SizedBox(
-            width: 10.0,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+        ),
+        SizedBox(width: 10.0,),
+        Expanded(
+          child: Container(
+            height: 120.0 ,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+
               children: [
-                SizedBox(
-                  width: 179,
-                  child: Text(
-                   "",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25.0,
-                        overflow: TextOverflow.ellipsis),
-                    maxLines: 1,
+                Expanded(
+                  child: Text(article["title"],
+                    style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w600,
                   ),
+                    maxLines: 3,
+                    overflow:TextOverflow.ellipsis ,),
                 ),
-                Text(
-                 "",
-                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-                ),
+
+                Text(article["publishedAt"], style: TextStyle(
+                    color: Colors.grey
+                ),),
+
               ],
             ),
           ),
-          Expanded(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                // Align the icons to the end of the row
-                children: [
-                  IconButton(
-                      onPressed: () {
+        ),
+      ],),
+    );},
+    itemCount:articles.length ,
+    separatorBuilder: (context, index) => separatorBuilder(context,index)
 
-                      },
-                      icon: const Icon(
-                        Icons.check_box,
-                        color: Colors.green,
-                      )),
-                  IconButton(
-                      onPressed: () {
-
-                      },
-                      icon: const Icon(
-                        Icons.archive,
-                        color: Colors.black38,
-                      )),
-                ]),
-          ),
-        ],
-      ),
-    ),
   );
 }
 
-Widget defaultFallback(IconData icon) {
+
+
+
+Widget fallbackByTextAndIcon(IconData icon,String text) {
   return Center(
     child: Column(
       mainAxisSize: MainAxisSize.min,
@@ -137,30 +124,27 @@ Widget defaultFallback(IconData icon) {
           size: 100.0,
           color: Colors.black38,
         ),
-        const Text(
-          "No Tasks Yet , Please add Some Tasks",
+        Text(
+          text,
           style: TextStyle(fontSize: 15.0),
         ),
       ],
     ),
   );
 }
+Widget fallbackByProgress(context) {
+  return const Center(
+    child: CircularProgressIndicator(
 
-Widget defaultTasksBuilder({required List inputList, required IconData icon}) {
-  return ConditionalBuilder(
-    condition: inputList.isNotEmpty,
-    fallback: (c) => defaultFallback(icon),
-    builder: (c) => ListView.separated(
-        itemBuilder: (context, index) =>
-            defaultItemTasks(map: inputList[index], context: context),
-        separatorBuilder: (context, index) => Padding(
-              padding: const EdgeInsetsDirectional.only(start: 20.0),
-              child: Container(
-                height: 2.0,
-                color: Colors.grey[200],
-                width: double.infinity,
-              ),
-            ),
-        itemCount: inputList.length),
+    ),
   );
 }
+Widget separatorBuilder(context, index) => Padding(
+  padding: const EdgeInsetsDirectional.only(start: 20.0),
+  child: Container(
+    height: 2.0,
+    color: Colors.grey[200],
+    width: double.infinity,
+  ),
+);
+

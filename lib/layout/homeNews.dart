@@ -10,8 +10,8 @@ import '../shared/cubit/cubit.dart';
 import '../shared/cubit/states.dart';
 
 class Home extends StatelessWidget {
-//https://newsapi.org/v2/
-// top-headlines
+//https://newsapi.org/
+// v2/top-headlines
 // ?country=eg&category=business&apiKey=65f7f556ec76449fa7dc7c0069f040ca
 
 
@@ -19,7 +19,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => BaseCubit(),
+      create: (BuildContext context) => BaseCubit()..getNews(category: "sports"),
       child: BlocConsumer<BaseCubit, BaseStates>(
         builder: (BuildContext context, BaseStates state) {
           var baseCubit = BaseCubit.getInstance(context);
