@@ -7,14 +7,16 @@ import 'package:news/shared/bloc_observer.dart';
 import 'package:news/shared/components/constants.dart';
 import 'package:news/shared/cubit/cubit.dart';
 import 'package:news/shared/cubit/states.dart';
+import 'package:news/shared/network/local/cach_helper.dart';
 import 'package:news/shared/network/remote/dio.dart';
 
 import 'layout/homeNews.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   DioHelper().inti();
   Bloc.observer = MyBlocObserver();
-
+  await CacheHelper.inti();
   runApp(const MyApp());
 }
 
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return BlocProvider<BaseCubit>(
-      create: (context) => BaseCubit()..getNews(category: "sports"),
+      create: (context) => BaseCubit()..getNews(category: "sports")..changeTheme(),
       child: BlocConsumer<BaseCubit, BaseStates>(
         listener: (context, state) => {},
         builder: (context, state) =>

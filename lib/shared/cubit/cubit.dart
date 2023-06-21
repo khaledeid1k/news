@@ -11,10 +11,16 @@ import 'package:news/shared/cubit/states.dart';
 
 import '../../modules/sports.dart';
 import '../components/constants.dart';
+import '../network/local/cach_helper.dart';
 import '../network/remote/dio.dart';
 
 class BaseCubit extends Cubit<BaseStates> {
-  BaseCubit() : super(InitState());
+  BaseCubit() : super(InitState()){
+    themeMode = (CacheHelper().readTheme()
+        == "ThemeMode.dark")
+        ? ThemeMode.dark
+        : ThemeMode.light;
+  }
 
   static BaseCubit getInstance(context) => BlocProvider.of(context);
   int currentIndex = 0;
@@ -22,7 +28,7 @@ class BaseCubit extends Cubit<BaseStates> {
   List<dynamic> businessList = [];
   List<dynamic> scienceList = [];
   List<dynamic> currentList = [];
-  ThemeMode themeMode =ThemeMode.light;
+   late ThemeMode themeMode=ThemeMode.light;
   Map<String, dynamic> query = {};
   List<Widget> screens = [Sports(), Business(), Science(), Settings()];
   List<BottomNavigationBarItem> bottomNavigationList = const [
@@ -46,7 +52,10 @@ class BaseCubit extends Cubit<BaseStates> {
 
   void changeTheme() {
     themeMode = (themeMode == ThemeMode.light) ? ThemeMode.dark : ThemeMode.light;
-     emit(ChangeThemeState());
+    CacheHelper().saveTheme(themeMode.toString()).then((value) {
+      emit(ChangeThemeState());
+
+    });
   }
 
   void getNews({required String category}) {
