@@ -22,7 +22,7 @@ class BaseCubit extends Cubit<BaseStates> {
   List<dynamic> businessList = [];
   List<dynamic> scienceList = [];
   List<dynamic> currentList = [];
-
+  ThemeMode themeMode =ThemeMode.light;
   Map<String, dynamic> query = {};
   List<Widget> screens = [Sports(), Business(), Science(), Settings()];
   List<BottomNavigationBarItem> bottomNavigationList = const [
@@ -42,6 +42,11 @@ class BaseCubit extends Cubit<BaseStates> {
       getNews(category: "science");
     }
     emit(CurrentIndexState());
+  }
+
+  void changeTheme() {
+    themeMode = (themeMode == ThemeMode.light) ? ThemeMode.dark : ThemeMode.light;
+     emit(ChangeThemeState());
   }
 
   void getNews({required String category}) {
@@ -85,4 +90,6 @@ class BaseCubit extends Cubit<BaseStates> {
       emit(NewsSuccessState());
     }
   }
+
+
 }

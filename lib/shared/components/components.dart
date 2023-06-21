@@ -56,7 +56,7 @@ Widget defaultFormField({
       validator: validator,
     );
 
-Widget defaultItemNews(
+Widget defaultItemNews(context,
     {required List<dynamic> articles}) {
   return  ListView.separated(
     physics: const BouncingScrollPhysics(),
@@ -87,10 +87,7 @@ Widget defaultItemNews(
               children: [
                 Expanded(
                   child: Text(article["title"],
-                    style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w600,
-                  ),
+                    style:Theme.of(context).textTheme.bodyText1,
                     maxLines: 3,
                     overflow:TextOverflow.ellipsis ,),
                 ),

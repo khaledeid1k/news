@@ -17,7 +17,7 @@ class Science extends StatelessWidget {
       builder:(context, state) =>  ConditionalBuilder(
         condition: state is! NewsLoadingState,
         fallback: (c) => fallbackByProgress(c),
-        builder: (c) => defaultItemNews(articles: baseCubit.currentList ),
+        builder: (c) => defaultItemNews(context,articles: baseCubit.currentList ),
       ),
     );
   }
