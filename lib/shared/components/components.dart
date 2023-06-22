@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:news/modules/webView.dart';
 import '../cubit/cubit.dart';
 import 'constants.dart';
 
@@ -65,47 +66,52 @@ Widget defaultItemNews(context,
     itemBuilder: (BuildContext context, int index) {
       Map<String, dynamic> article = articles[index];
 
-      return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Row(children: [
-        Container(
-          width: 120,
-          height: 120,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            image: DecorationImage(
-                image: NetworkImage(
-                  article["urlToImage"] ?? "https://th.bing.com/th/id/OIP.p-aZsNRUiC7FilHb3hnEYgHaE8?pid=ImgDet&rs=1",),
+      return InkWell(
+        onTap: (){
+          navigate(context: context, widget: WebViewScreen(article['url']));
+        },
+        child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(children: [
+          Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              image: DecorationImage(
+                  image: NetworkImage(
+                    article["urlToImage"] ?? "https://th.bing.com/th/id/OIP.p-aZsNRUiC7FilHb3hnEYgHaE8?pid=ImgDet&rs=1",),
 
-                fit: BoxFit.cover),
-          ),
-        ),
-        SizedBox(width: 10.0,),
-        Expanded(
-          child: Container(
-            height: 120.0 ,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-
-              children: [
-                Expanded(
-                  child: Text(article["title"],
-                    style:Theme.of(context).textTheme.bodyText1,
-                    maxLines: 3,
-                    overflow:TextOverflow.ellipsis ,),
-                ),
-
-                Text(article["publishedAt"], style: TextStyle(
-                    color: Colors.grey
-                ),),
-
-              ],
+                  fit: BoxFit.cover),
             ),
           ),
-        ),
-      ],),
-    );},
+          SizedBox(width: 10.0,),
+          Expanded(
+            child: Container(
+              height: 120.0 ,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+
+                children: [
+                  Expanded(
+                    child: Text(article["title"],
+                      style:Theme.of(context).textTheme.bodyText1,
+                      maxLines: 3,
+                      overflow:TextOverflow.ellipsis ,),
+                  ),
+
+                  Text(article["publishedAt"], style: TextStyle(
+                      color: Colors.grey
+                  ),),
+
+                ],
+              ),
+            ),
+          ),
+        ],),
+    ),
+      );},
     itemCount:articles.length ,
     separatorBuilder: (context, index) => separatorBuilder(context,index)
 
