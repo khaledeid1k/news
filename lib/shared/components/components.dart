@@ -35,6 +35,7 @@ Widget defaultFormField({
   required String? Function(String?)? validator,
   Function()? onSuffixIconPressed,
   Function()? onTap,
+  Function(String value)? onChanged,
 }) =>
     TextFormField(
       controller: controller,
@@ -54,6 +55,7 @@ Widget defaultFormField({
         border: const OutlineInputBorder(),
       ),
       validator: validator,
+      onChanged:onChanged ,
     );
 
 Widget defaultItemNews(context,
@@ -72,7 +74,9 @@ Widget defaultItemNews(context,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             image: DecorationImage(
-                image: NetworkImage("https://th.bing.com/th/id/OIP.p-aZsNRUiC7FilHb3hnEYgHaE8?pid=ImgDet&rs=1"),
+                image: NetworkImage(
+                  article["urlToImage"] ?? "https://th.bing.com/th/id/OIP.p-aZsNRUiC7FilHb3hnEYgHaE8?pid=ImgDet&rs=1",),
+
                 fit: BoxFit.cover),
           ),
         ),
@@ -144,4 +148,7 @@ Widget separatorBuilder(context, index) => Padding(
     width: double.infinity,
   ),
 );
+void navigate({required context , required Widget widget}){
+   Navigator.push(context, MaterialPageRoute(builder: (context)=>widget));
+}
 

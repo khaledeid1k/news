@@ -13,7 +13,7 @@ import '../../modules/sports.dart';
 import '../components/constants.dart';
 import '../network/local/cach_helper.dart';
 import '../network/remote/dio.dart';
-
+//https://newsapi.org/v2/everything?q=lol&from=2023-06-20&to=2023-06-20&sortBy=popularity&apiKey=bf401f10eb4a417fa384e36cbb83b2a1
 class BaseCubit extends Cubit<BaseStates> {
   BaseCubit() : super(InitState()){
     themeMode = (CacheHelper().readTheme()
@@ -28,8 +28,9 @@ class BaseCubit extends Cubit<BaseStates> {
   List<dynamic> businessList = [];
   List<dynamic> scienceList = [];
   List<dynamic> currentList = [];
+  List<dynamic> searchResult = [];
    late ThemeMode themeMode=ThemeMode.light;
-  Map<String, dynamic> query = {};
+
   List<Widget> screens = [Sports(), Business(), Science(), Settings()];
   List<BottomNavigationBarItem> bottomNavigationList = const [
     BottomNavigationBarItem(icon: Icon(Icons.sports), label: sports),
@@ -58,7 +59,8 @@ class BaseCubit extends Cubit<BaseStates> {
     });
   }
 
-  void getNews({required String category}) {
+  void getNews({required String category} ) {
+    Map<String, dynamic> query = {};
     if (!['science', 'business', 'sports'].contains(category)) {
       emit(NewsErrorState());
       return;
@@ -84,8 +86,6 @@ class BaseCubit extends Cubit<BaseStates> {
 
       DioHelper.getData(path: "v2/top-headlines", query: query).then((value) {
         currentList.addAll(value.data["articles"]);
-
-
         emit(NewsSuccessState());
       }).catchError((onError) {
         emit(NewsErrorState());
@@ -98,6 +98,26 @@ class BaseCubit extends Cubit<BaseStates> {
 
       emit(NewsSuccessState());
     }
+  }
+  void getSearchResult({required String textSearch} ) {
+    Map<String, dynamic> query = {};
+      emit(NewsLoadingState());
+      query['q'] = textSearch;
+      query['from'] = '2023-06-21';
+      query['to'] = '2023-06-21';
+      query['sortBy'] = 'popularity';
+      query['apiKey'] = 'bf401f10eb4a417fa384e36cbb83b2a1';
+
+      DioHelper.getData(path: "v2/everything", query: query).then((value) {
+        searchResult.addAll(value.data["articles"]);
+        logger.d(value.data["articles"].toString());
+        emit(NewsSuccessState());
+      }).catchError((onError) {
+        emit(NewsErrorState());
+        logger.d(onError.toString());
+      });
+
+
   }
 
 

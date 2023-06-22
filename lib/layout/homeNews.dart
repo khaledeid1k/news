@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:news/modules/search.dart';
 import '../shared/components/components.dart';
 import '../shared/components/constants.dart';
 import '../shared/cubit/cubit.dart';
@@ -20,7 +21,9 @@ class Home extends StatelessWidget {
           appBar: AppBar(
             title: const Text("News"),
             actions: [
-              IconButton(onPressed: (){},
+              IconButton(onPressed: (){
+                navigate(context: context,widget: Search());
+              },
                   icon: const Icon(Icons.search),),
               IconButton(
                 onPressed: (){
